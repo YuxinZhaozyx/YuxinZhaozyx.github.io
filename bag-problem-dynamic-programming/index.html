@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+<meta charset="utf-8">
+<title>背包问题动态规划求解 - Yuxin Zhao</title>
+<base href="/">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<link rel="canonical" href="https://yuxinzhao.net/bag-problem-dynamic-programming/">
+<link rel="icon" type="image/x-icon" href="/static/icon.png">
+<meta name="description" content="本文介绍通过动态规划求解背包问题。">
+<meta name="keywords" content="dynamic-programming,bag-problem">
+<meta property="og:type" content="website">
+<meta property="og:title" content="背包问题动态规划求解">
+<meta property="og:url" content="https://yuxinzhao.net/bag-problem-dynamic-programming/index.html">
+<meta property="og:site_name" content="Yuxin Zhao">
+<meta property="og:description" content="本文介绍通过动态规划求解背包问题。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yuxinzhao.net/static/avatar.jpg">
+<meta property="og:updated_time" content="2022-01-04T08:35:48.539Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="背包问题动态规划求解">
+<meta name="twitter:description" content="本文介绍通过动态规划求解背包问题。">
+<meta name="twitter:image" content="https://yuxinzhao.net/static/avatar.jpg">
+<link href="//fonts.googleapis.com/css?family=Baloo+Bhaijaan|Inconsolata|Josefin+Sans|Montserrat|Kaushan+Script" rel="stylesheet">
+<link href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" rel="stylesheet">
+<style>.bilibili {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 65%;
+}
+.bilibili iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+</style>
+<style>.friend-cards {
+  margin: -10px 10px 0;
+}
+.friend-cards .md-links {
+  overflow: auto;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+}
+.friend-cards .md-links > .md-links-item {
+  position: relative;
+  float: left;
+  overflow: hidden;
+  margin: 20px 7px;
+  padding: 0;
+  width: 256px;
+  height: 90px;
+  border-radius: 8px;
+  list-style: none;
+  line-height: 17px;
+  -webkit-transform: perspective(1px) translateZ(0);
+  -moz-transform: perspective(1px) translateZ(0);
+  -o-transform: perspective(1px) translateZ(0);
+  -ms-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+}
+.friend-cards .md-links > .md-links-item:hover img {
+  -webkit-transform: rotate(540deg);
+  -moz-transform: rotate(540deg);
+  -o-transform: rotate(540deg);
+  -ms-transform: rotate(540deg);
+  transform: rotate(540deg);
+}
+.friend-cards .md-links > .md-links-item:before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: #49b1f5;
+  content: '';
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  -ms-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  -ms-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: -webkit-transform;
+  -moz-transition-property: -moz-transform;
+  -o-transition-property: -o-transform;
+  -ms-transition-property: -ms-transform;
+  transition-property: transform;
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -o-transform: scale(0);
+  -ms-transform: scale(0);
+  transform: scale(0);
+}
+.friend-cards .md-links > .md-links-item:hover:before,
+.friend-cards .md-links > .md-links-item:focus:before,
+.friend-cards .md-links > .md-links-item:active:before {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -o-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
+.friend-cards .md-links > .md-links-item a {
+  color: #333;
+  text-decoration: none;
+}
+.friend-cards .md-links > .md-links-item a img {
+  float: left;
+  margin: 6px 10px;
+  padding: 4px;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.friend-cards .md-links > .md-links-item a .md-links-title {
+  overflow: hidden;
+  padding: 22px 10px 0 0;
+  height: 18px;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: bold;
+  font-size: 20px;
+}
+.friend-cards .md-links > .md-links-item a .md-links-des {
+  overflow: hidden;
+  padding: 16px 10px;
+  height: 50px;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+</style>
+<style>header.dq.z {
+    background: transparent;
+}
+.ee.z {
+    background: transparent;
+}
+</style>
+<link href="/styles.d1f4718a192abf1f2afd.css" rel="stylesheet">
+<link rel="stylesheet" href="/theme.3e7f5a29434222bca394.css">
+<script src="/config.46ede55db80e9190a8fd.js"></script>
+</head>
+<body lang="en">
+<is-a></is-a>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script type="text/javascript">function renderGitalk() {
+  document.getElementById("gitalk-container").innerHTML = "";
+  window.__gitalk = new Gitalk({
+    clientID: 'ec5806c0144b70a1b32e',
+    clientSecret: 'aadae41a3747ffa5b36fd0e13c7e84026db07e0c',
+    repo: 'YuxinZhaozyx.github.io',
+    owner: 'YuxinZhaozyx',
+    id: decodeURIComponent(location.pathname),
+    admin: ['YuxinZhaozyx'],
+    distractionFreeMode: false,
+    pagerDirection: 'last',
+    createIssueManually: false,
+    enableHotKey: true,
+    flipMoveOptions: {
+      staggerDelayBy: 150,
+      appearAnimation: 'elevator',
+      enterAnimation: 'elevator',
+      leaveAnimation: 'elevator',
+    },
+  });
+  __gitalk.render("gitalk-container");
+}
+function titleModified() {
+  renderGitalk();
+}
+window.onload = function() {
+    var titleEl = document.getElementsByTagName("title")[0];
+    var docEl = document.documentElement;
+
+    if (docEl && docEl.addEventListener) {
+        docEl.addEventListener("DOMSubtreeModified", function(evt) {
+            var t = evt.target;
+            if (t === titleEl || (t.parentNode && t.parentNode === titleEl)) {
+                titleModified();
+            }
+        }, false);
+    } else {
+        document.onpropertychange = function() {
+            if (window.event.propertyName == "title") {
+                titleModified();
+            }
+        };
+    }
+};
+</script>
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script>
+<script src="/runtime.caef73fae70e33459c5a.js"></script>
+<script src="/polyfills.28555e618578fe61f50a.js"></script>
+<script src="/main.a6ef31dc523c76e5118c.js"></script>
+</body>
+</html>
